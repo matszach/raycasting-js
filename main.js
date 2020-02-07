@@ -25,6 +25,7 @@ class Pointer {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+		this.focused = false;
     }
 }
 
@@ -60,10 +61,13 @@ for(var i = 0; i < 1 + Math.random() * 3; i++) {
 
 // ===== ===== LISTENERS ===== =====
 CVS.onmousemove = e => {
-    Map.pointer.x = e.clientX;
-    Map.pointer.y = e.clientY;
+	let p = Map.pointer;
+    p.x = e.clientX;
+    p.y = e.clientY; 
+	p.focused = e.buttons > 0;
 }
-
+CVS.onmousedown = CVS.onmousemove;
+CVS.onmouseup = CVS.onmousemove;
 
 // ===== ===== DRAW LOOP ===== =====
 setInterval(() => {
@@ -96,14 +100,17 @@ setInterval(() => {
 
     // rays
     CTX.lineWidth = 0.05;
-	CTX.strokeStyle = '#aaaaaa'
+	CTX.strokeStyle = '#ffffff'
 	CTX.beginPath();
+	
     var p = Map.pointer;
-    for(var i = 0; i < 360; i += 0.05) {
+	var rayLength = p.focused ? 1200 : 300;
+	
+    for(var i = 0; i < 360; i += p.focused ? 0.05 : 0.10) {
         var x3 = p.x;
         var y3 = p.y;
-        var x4 = p.x + Math.sin(Math.PI/180 * i) * 1200
-        var y4 = p.y + Math.cos(Math.PI/180 * i) * 1200
+        var x4 = p.x + Math.sin(Math.PI/180 * i) * rayLength;
+        var y4 = p.y + Math.cos(Math.PI/180 * i) * rayLength;
 
         var ray = new Edge(x3, y3, x4, y4);
 
@@ -144,15 +151,15 @@ setInterval(() => {
                 x4 = xCross;
                 y4 = yCross;
             }
-
+				
         })
-
+		
 		
         CTX.moveTo(ray.x1, ray.y1);
         CTX.lineTo(ray.x2, ray.y2);
 		
     }   
-    CTX.stroke();
+	CTX.stroke();
 
 
 }, 20);
