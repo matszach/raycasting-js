@@ -33,6 +33,7 @@ class Pointer {
 
 
 
+
 // ===== ===== MODEL ===== =====
 const Map = {
     edges: [],
@@ -60,11 +61,16 @@ for(var i = 0; i < 1 + Math.random() * 3; i++) {
 
 
 // ===== ===== LISTENERS ===== =====
+const Mouse = {
+	x : 0,
+	y : 0,
+	buttons : 0
+}
+
 CVS.onmousemove = e => {
-	let p = Map.pointer;
-    p.x = e.clientX;
-    p.y = e.clientY; 
-	p.focused = e.buttons > 0;
+	Mouse.x = e.clientX;
+	Mouse.y = e.clientY;
+	Mouse.buttons = e.buttons;
 }
 CVS.onmousedown = CVS.onmousemove;
 CVS.onmouseup = CVS.onmousemove;
@@ -100,7 +106,7 @@ setInterval(() => {
 
     // rays
     CTX.lineWidth = 0.05;
-	CTX.strokeStyle = '#ffffff'
+	CTX.strokeStyle = '#aaaa44'
 	CTX.beginPath();
 	
     var p = Map.pointer;
@@ -160,6 +166,14 @@ setInterval(() => {
 		
     }   
 	CTX.stroke();
+	
+	
+	// ease the light point to the mouse position
+	let dx = Mouse.x- p.x;
+	p.x += dx/10;
+	let dy = Mouse.y - p.y; 
+	p.y += dy/10;
+	p.focused = Mouse.buttons > 0;
 
 
 }, 20);
