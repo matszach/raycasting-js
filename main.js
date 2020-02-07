@@ -89,7 +89,7 @@ setInterval(() => {
 
     // edges
     CTX.strokeStyle = '#ff0000';
-    CTX.lineWidth = 5;
+    CTX.lineWidth = 10;
     CTX.beginPath();
     Map.edges.forEach(e => {
         CTX.moveTo(e.x1, e.y1);
