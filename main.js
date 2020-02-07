@@ -64,12 +64,24 @@ CVS.onmousemove = e => {
 
 // ===== ===== DRAW LOOP ===== =====
 setInterval(() => {
-    
+	
+
     // clear
     CTX.clearRect(0, 0, 1200, 800);
+	
+	// background
+	CTX.fillStyle = '#00000f'
+	for(var i = 0; i < 12; i++) {
+		for(var j = 0; j < 8; j++) {
+			if((i + j) % 2 == 0){
+				CTX.fillRect(i * 100, j * 100, 100, 100)
+			}
+		}
+	}
+	
 
     // edges
-    CTX.strokeStyle = 'red';
+    CTX.strokeStyle = '#ff0000';
     CTX.lineWidth = 5;
     CTX.beginPath();
     Map.edges.forEach(e => {
@@ -77,17 +89,18 @@ setInterval(() => {
         CTX.lineTo(e.x2, e.y2);
     });
     CTX.stroke();
+	
 
     // rays
-    CTX.strokeStyle = 'gray';
-    CTX.lineWidth = 1;
-    CTX.beginPath();
+    CTX.lineWidth = 0.05;
+	CTX.strokeStyle = '#aaaaaa'
+	CTX.beginPath();
     var p = Map.pointer;
-    for(var i = 0; i < 360; i += 0.5) {
+    for(var i = 0; i < 360; i += 0.05) {
         var x3 = p.x;
         var y3 = p.y;
-        var x4 = p.x + Math.sin(Math.PI/180 * i) * 2000
-        var y4 = p.y + Math.cos(Math.PI/180 * i) * 2000
+        var x4 = p.x + Math.sin(Math.PI/180 * i) * 1200
+        var y4 = p.y + Math.cos(Math.PI/180 * i) * 1200
 
         var ray = new Edge(x3, y3, x4, y4);
 
@@ -130,11 +143,11 @@ setInterval(() => {
             }
 
         })
-			
 
-
+		
         CTX.moveTo(ray.x1, ray.y1);
         CTX.lineTo(ray.x2, ray.y2);
+		
     }   
     CTX.stroke();
 
