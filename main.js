@@ -38,20 +38,23 @@ const Map = {
     pointer: new Pointer(0, 0)
 }
 
-Map.edges.push(new Edge(100, 300, 700, 200));
-Map.edges.push(new Edge(100, 400, 1000, 600));
-Map.edges.push(new Edge(100, 100, 500, 700));
-Map.edges.push(new Edge(500, 100, 500, 700));
+// random edge generation
+for(var i = 0; i < 3 + Math.random() * 4; i++) {
+	Map.edges.push(new Edge(Math.random() * 1200, Math.random() * 800, Math.random() * 1200, Math.random() * 800));
+}
 
-var movingEdge = new Edge(900, 100, 900, 300);
-movingEdge.direction = 180;
-Map.edges.push(movingEdge);
+for(var i = 0; i < 1 + Math.random() * 3; i++) {
+	var movingEdge = new Edge(0, 0, Math.random() * 1200, Math.random() * 800);
+	movingEdge.direction = 180;
+	Map.edges.push(movingEdge);
+	var len = Math.random() * 400 + 50
+	setInterval((e) => {
+		e.direction++;
+		e.x1 = e.x2 + Math.sin(Math.PI/180 * e.direction) * len;
+		e.y1 = e.y2 + Math.cos(Math.PI/180 * e.direction) * len;
+	}, Math.random() * 50 + 25, movingEdge);
+}
 
-setInterval(() => {
-    movingEdge.direction++;
-    movingEdge.x1 = movingEdge.x2 + Math.sin(Math.PI/180 * movingEdge.direction) * 200;
-    movingEdge.y1 = movingEdge.y2 + Math.cos(Math.PI/180 * movingEdge.direction) * 200;
-}, 50);
 
 
 
